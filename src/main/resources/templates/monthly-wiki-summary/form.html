@@ -60,14 +60,12 @@
 <nav class="navbar navbar-expand-lg navbar-custom">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">JASPERSOFT COMMUNITY™</a>
-			<!-- Back Button -->
-		<a class="btn btn-outline-light me-3" href="/dashboard">← Back</a>
+        <a class="btn btn-outline-light me-3" href="/dashboard">← Back</a>
         <div class="collapse navbar-collapse justify-content-end">
             <ul class="navbar-nav align-items-center">
                 <li class="nav-item me-3">
                     <span class="navbar-text">
-                       
-                     <strong th:text="${#authentication.name}">superuser</strong>
+                        <strong th:text="${#authentication.name}">superuser</strong>
                     </span>
                 </li>
                 <li class="nav-item me-3">
@@ -93,10 +91,17 @@
                 <form th:action="@{${monthlyWikiSummary.id} == null ? '/monthly-wiki-summary' : '/monthly-wiki-summary/update/' + ${monthlyWikiSummary.id}}"
                       th:object="${monthlyWikiSummary}" method="post">
 
-                    <!-- Month Input -->
+                    <!-- Month Dropdown -->
                     <div class="mb-3">
                         <label for="month" class="form-label">Month</label>
-                        <input type="number" th:field="*{month}" class="form-control" id="month" placeholder="Enter month (1-12)" required>
+                        <select th:field="*{month}" class="form-select" id="month" required>
+                            <option value="" disabled th:selected="*{month} == null">-- Select Month --</option>
+                            <option th:each="m : ${months}"
+                                    th:value="${m}"
+                                    th:text="${m}"
+                                    th:selected="${m} == *{month}">
+                            </option>
+                        </select>
                     </div>
 
                     <!-- Total Articles Assigned -->
@@ -143,7 +148,7 @@
 
 <!-- 🧩 Footer -->
 <footer>
-   © 2025 Jaspersoft Community™. All rights reserved.
+    © 2025 Jaspersoft Community™. All rights reserved.
 </footer>
 
 <!-- Bootstrap 5 Bundle JS -->

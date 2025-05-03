@@ -16,34 +16,47 @@ public class MonthlyQaSummaryController {
     @Autowired
     private MonthlyQaSummaryRepository monthlyQaSummaryRepository;
 
-    // Show all records (for Thymeleaf)
+    private final List<String> months = List.of("JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+                                                "JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
+
+    // Show all records or filter by month
     @GetMapping
-    public String getAllRecords(Model model) {
-        List<MonthlyQaSummary> records = monthlyQaSummaryRepository.findAll();
+    public String getAllRecords(@RequestParam(value = "month", required = false) String month, Model model) {
+        model.addAttribute("months", months);
+        model.addAttribute("selectedMonth", month);
+
+        List<MonthlyQaSummary> records;
+        if (month != null && !month.isEmpty()) {
+            records = monthlyQaSummaryRepository.findByMonth(month.toUpperCase());
+        } else {
+            records = monthlyQaSummaryRepository.findAll();
+        }
         model.addAttribute("records", records);
-        return "monthly-qa-summary/list";  // Thymeleaf template
+        return "monthly-qa-summary/list";
     }
 
     // Show form to insert new record
     @GetMapping("/new")
     public String showFormForNewRecord(Model model) {
+        model.addAttribute("months", months);
         model.addAttribute("monthlyQaSummary", new MonthlyQaSummary());
-        return "monthly-qa-summary/form";  // Thymeleaf template
+        return "monthly-qa-summary/form";
     }
 
     // Save new record
     @PostMapping
     public String saveNewRecord(@ModelAttribute MonthlyQaSummary monthlyQaSummary) {
         monthlyQaSummaryRepository.save(monthlyQaSummary);
-        return "redirect:/monthly-qa-summary";  // Redirect to the list view
+        return "redirect:/monthly-qa-summary";
     }
 
     // Show form to update existing record
     @GetMapping("/update/{id}")
     public String showFormForUpdate(@PathVariable Integer id, Model model) {
         MonthlyQaSummary monthlyQaSummary = monthlyQaSummaryRepository.findById(id).orElseThrow();
+        model.addAttribute("months", months);
         model.addAttribute("monthlyQaSummary", monthlyQaSummary);
-        return "monthly-qa-summary/form";  // Thymeleaf template
+        return "monthly-qa-summary/form";
     }
 
     // Handle update of existing record
@@ -60,4 +73,4 @@ public class MonthlyQaSummaryController {
         monthlyQaSummaryRepository.deleteById(id);
         return "redirect:/monthly-qa-summary";
     }
-}
+} 

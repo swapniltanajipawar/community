@@ -3,8 +3,6 @@
 
 <head>
     <title>Top Contributors Wiki List</title>
-
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
@@ -53,12 +51,12 @@
 
         main {
             flex: 1 0 auto;
-            padding-top: 80px; /* space for fixed navbar */
-            padding-bottom: 70px; /* space for fixed footer */
+            padding-top: 80px;
+            padding-bottom: 70px;
         }
 
         .table-wrapper {
-            max-height: 70vh; /* Optional: limit height for scroll */
+            max-height: 70vh;
             overflow-y: auto;
         }
 
@@ -74,7 +72,7 @@
 
 <body>
 
-    <!-- 🔵 Header/Navbar -->
+    <!-- Header/Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">JASPERSOFT COMMUNITY™</a>
@@ -101,12 +99,34 @@
     <main class="container-fluid my-4">
         <div class="row justify-content-center">
             <div class="col-lg-10">
+
+                <!-- Title and Add Button -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 class="mb-0">Top Contributors Wiki</h3>
                     <a href="/top-contributors-wiki/new" class="btn btn-success">Add New Record</a>
                 </div>
 
-                <!-- ✅ Scrollable Table Section -->
+                <!-- Month Filter Form -->
+                <form class="row g-3 mb-4" method="get" th:action="@{/top-contributors-wiki}">
+                    <div class="col-auto">
+                        <label for="month" class="col-form-label">Filter by Month:</label>
+                    </div>
+                    <div class="col-auto">
+                        <select class="form-select" name="month" id="month">
+                            <option value="">-- All Months --</option>
+                            <option th:each="mon : ${months}"
+                                    th:value="${mon}"
+                                    th:text="${mon}"
+                                    th:selected="${month} == ${mon}">
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-primary">Apply Filter</button>
+                    </div>
+                </form>
+
+                <!-- Wiki Table -->
                 <div class="table-wrapper">
                     <table class="table table-bordered table-striped shadow-sm">
                         <thead>
@@ -119,16 +139,15 @@
                         </thead>
                         <tbody>
                             <tr th:each="record : ${records}">
-                                <td th:text="${record.contributorName}"></td>
-                                <td th:text="${record.teamName}"></td>
-                                <td th:text="${record.month}"></td>
+                                <td th:text="${record.contributorName}">Contributor</td>
+                                <td th:text="${record.teamName}">Team</td>
+                                <td th:text="${record.month}">Month</td>
                                 <td>
                                     <div class="d-flex gap-2" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                                        <a th:href="@{'/top-contributors-wiki/update/' + ${record.id}}" class="btn btn-sm btn-primary btn-action">Edit</a>
-                                        <form th:action="@{'/top-contributors-wiki/delete/' + ${record.id}}" method="post"
-                                              onsubmit="return confirm('Are you sure you want to delete this record?');">
-                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                                        </form>
+                                        <a th:href="@{'/top-contributors-wiki/update/' + ${record.id}}" class="btn btn-sm btn-primary">Edit</a>
+										<a th:href="@{'/top-contributors-wiki/delete/' + ${record.id}}" 
+										   onclick="return confirm('Are you sure you want to delete this record?  ')"
+										   class="btn btn-sm btn-danger">Delete</a>
                                     </div>
                                     <span th:if="${#authorization.expression('hasRole(''USER'')')}">View Only</span>
                                 </td>

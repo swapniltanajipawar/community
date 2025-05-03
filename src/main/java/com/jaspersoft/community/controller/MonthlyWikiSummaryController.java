@@ -16,17 +16,28 @@ public class MonthlyWikiSummaryController {
     @Autowired
     private MonthlyWikiSummaryRepository monthlyWikiSummaryRepository;
 
+    private final List<String> months = List.of("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
+
     @GetMapping
-    public String getAllRecords(Model model) {
-        List<MonthlyWikiSummary> records = monthlyWikiSummaryRepository.findAll();
+    public String getAllRecords(@RequestParam(value = "month", required = false) String month, Model model) {
+        model.addAttribute("months", months);
+        model.addAttribute("selectedMonth", month);
+
+        List<MonthlyWikiSummary> records;
+        if (month != null && !month.isEmpty()) {
+            records = monthlyWikiSummaryRepository.findByMonth(month.toUpperCase());
+        } else {
+            records = monthlyWikiSummaryRepository.findAll();
+        }
         model.addAttribute("records", records);
-        return "monthly-wiki-summary/list";  // Thymeleaf template
+        return "monthly-wiki-summary/list";
     }
 
     @GetMapping("/new")
     public String showFormForNewRecord(Model model) {
+        model.addAttribute("months", months);
         model.addAttribute("monthlyWikiSummary", new MonthlyWikiSummary());
-        return "monthly-wiki-summary/form";  // Thymeleaf template
+        return "monthly-wiki-summary/form";
     }
 
     @PostMapping
@@ -38,6 +49,7 @@ public class MonthlyWikiSummaryController {
     @GetMapping("/update/{id}")
     public String showFormForUpdate(@PathVariable Integer id, Model model) {
         MonthlyWikiSummary monthlyWikiSummary = monthlyWikiSummaryRepository.findById(id).orElseThrow();
+        model.addAttribute("months", months);
         model.addAttribute("monthlyWikiSummary", monthlyWikiSummary);
         return "monthly-wiki-summary/form";
     }

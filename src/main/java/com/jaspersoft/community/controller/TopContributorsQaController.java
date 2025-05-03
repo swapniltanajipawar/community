@@ -1,6 +1,7 @@
 package com.jaspersoft.community.controller;
 
 import com.jaspersoft.community.entity.TopContributorsQa;
+import com.jaspersoft.community.repository.QaContributorsListRepository;
 import com.jaspersoft.community.repository.TopContributorsQaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,17 +17,36 @@ public class TopContributorsQaController {
     @Autowired
     private TopContributorsQaRepository topContributorsQaRepository;
 
+    @Autowired
+    private QaContributorsListRepository qaContributorListRepository;
+
+    private static final List<String> MONTHS = List.of("JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
+    private static final List<String> TEAMS = List.of("CS", "Support", "Pre-Sales");
+
     @GetMapping
-    public String getAllRecords(Model model) {
-        List<TopContributorsQa> records = topContributorsQaRepository.findAll();
+    public String getAllRecords(@RequestParam(required = false) String month, Model model) {
+        List<TopContributorsQa> records;
+        if (month != null && !month.isEmpty()) {
+            records = topContributorsQaRepository.findByMonth(month);
+            model.addAttribute("selectedMonth", month); // Send selected month to the view
+        } else {
+            records = topContributorsQaRepository.findAll();
+            model.addAttribute("selectedMonth", null); // No month selected
+        }
         model.addAttribute("records", records);
-        return "top-contributors-qa/list";  // Thymeleaf template
+        model.addAttribute("months", MONTHS);
+        model.addAttribute("teams", TEAMS);
+        model.addAttribute("contributors", qaContributorListRepository.findAll());
+        return "top-contributors-qa/list";
     }
 
     @GetMapping("/new")
     public String showFormForNewRecord(Model model) {
         model.addAttribute("topContributorsQa", new TopContributorsQa());
-        return "top-contributors-qa/form";  // Thymeleaf template
+        model.addAttribute("months", MONTHS);
+        model.addAttribute("teams", TEAMS);
+        model.addAttribute("contributors", qaContributorListRepository.findAll());
+        return "top-contributors-qa/form";
     }
 
     @PostMapping
@@ -39,6 +59,9 @@ public class TopContributorsQaController {
     public String showFormForUpdate(@PathVariable Integer id, Model model) {
         TopContributorsQa topContributorsQa = topContributorsQaRepository.findById(id).orElseThrow();
         model.addAttribute("topContributorsQa", topContributorsQa);
+        model.addAttribute("months", MONTHS);
+        model.addAttribute("teams", TEAMS);
+        model.addAttribute("contributors", qaContributorListRepository.findAll());
         return "top-contributors-qa/form";
     }
 
