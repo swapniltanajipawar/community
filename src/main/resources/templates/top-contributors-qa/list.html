@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Top Contributors QA List</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-custom {
+            background-color: #002060;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1030;
+        }
+
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link,
+        .navbar-custom .navbar-text {
+            color: white;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        footer {
+            background-color: #002060;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1030;
+        }
+
+        main {
+            flex: 1 0 auto;
+            padding-top: 80px;  /* for navbar */
+            padding-bottom: 70px; /* for footer */
+        }
+
+        .table-wrapper {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #002060;
+            color: white;
+            z-index: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 🔵 Header/Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">JASPERSOFT COMMUNITY™</a>
+            <a class="btn btn-outline-light me-3" href="/dashboard">← Back</a>
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item me-3">
+                        <span class="navbar-text">
+                            <strong th:text="${#authentication.name}">superuser</strong>
+                        </span>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link" href="#">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-danger logout-btn" href="/logout">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container-fluid my-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+
+                <!-- Title and Add Button -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="mb-0">Top Contributors QA</h3>
+                    <a href="/top-contributors-qa/new" class="btn btn-success">Add New Record</a>
+                </div>
+
+                <!-- ✅ Scrollable Table -->
+                <div class="table-wrapper">
+                    <table class="table table-bordered table-striped shadow-sm">
+                        <thead>
+                            <tr>
+                                <th>Contributor Name</th>
+                                <th>Team Name</th>
+                                <th>Month</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="record : ${records}">
+                                <td th:text="${record.contributorName}">Contributor Name</td>
+                                <td th:text="${record.teamName}">Team Name</td>
+                                <td th:text="${record.month}">Month</td>
+                                <td>
+                                    <div class="d-flex gap-2" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                                        <a th:href="@{'/top-contributors-qa/update/' + ${record.id}}" class="btn btn-sm btn-primary">Edit</a>
+                                        <form th:action="@{'/top-contributors-qa/delete/' + ${record.id}}" method="post"
+                                              onsubmit="return confirm('Are you sure you want to delete this record?');">
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                    <span th:if="${#authorization.expression('hasRole(''USER'')')}">View Only</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        © 2025 Jaspersoft Community™. All rights reserved.
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>QA Management - Jaspersoft Community Dashboard</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .navbar-custom {
+            background-color: #002060;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1030;
+        }
+
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link,
+        .navbar-custom .navbar-text {
+            color: white;
+        }
+
+        footer {
+            background-color: #002060;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 14px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            z-index: 1030;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 24px;
+        }
+
+        main {
+            padding-top: 70px;
+            padding-bottom: 60px;
+        }
+
+        .table-wrapper {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .table thead th {
+            position: sticky;
+            top: 0;
+            background-color: #002060;
+            color: white;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+
+<!-- 🔵 Header/Navbar -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">JASPERSOFT COMMUNITY™</a>
+        <a class="btn btn-outline-light me-3" href="/dashboard">← Back</a>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav align-items-center">
+                <li class="nav-item me-3">
+                    <span class="navbar-text">
+                        <strong th:text="${#authentication.name}">superuser</strong>
+                    </span>
+                </li>
+                <li class="nav-item me-3">
+                    <a class="nav-link" href="#">Help</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-danger logout-btn" href="/logout">Log Out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- 🧩 Main Content -->
+<main class="container my-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">QA Records List</h2>
+        <a th:href="@{/qa/new}" class="btn btn-success">+ Add New Record</a>
+    </div>
+
+    <!-- 🔍 Filter by Month -->
+    <form class="row g-3 mb-4" method="get" th:action="@{/qa}">
+        <div class="col-auto">
+            <label for="month" class="col-form-label">Filter by Month:</label>
+        </div>
+        <div class="col-auto">
+            <select class="form-select" name="month" id="month">
+                <option value="">-- All Months --</option>
+                <option th:each="i : ${#numbers.sequence(1,12)}"
+                        th:value="${i}"
+                        th:text="${i}"
+                        th:selected="${month} == ${i}">
+                </option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Apply Filter</button>
+        </div>
+    </form>
+
+    <!-- 📋 Data Table with Floating Headers -->
+    <div class="table-wrapper shadow-sm">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Contributor Name</th>
+                    <th>Questions Assigned</th>
+                    <th>Pending Community User</th>
+                    <th>Answered</th>
+                    <th>Month</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="qa : ${qaList}">
+                    <td th:text="${qa.id}">1</td>
+                    <td th:text="${qa.contributorName}">John Doe</td>
+                    <td th:text="${qa.questionsAssigned}">10</td>
+                    <td th:text="${qa.pendingCommunityUser}">2</td>
+                    <td th:text="${qa.answered}">8</td>
+                    <td th:text="${qa.month}">4</td>
+                    <td>
+                        <div class="d-flex gap-2" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+                            <a class="btn btn-sm btn-primary" th:href="@{'/qa/update/' + ${qa.id}}">Edit</a>
+                            <a class="btn btn-sm btn-danger" th:href="@{'/qa/delete/' + ${qa.id}}"
+                               onclick="return confirm('Are you sure you want to delete this record?')">Delete</a>
+                        </div>
+                        <span th:if="${#authorization.expression('hasRole(''USER'')')}">View Only</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<!-- 🧩 Footer -->
+<footer>
+    © 2025 Jaspersoft Community™. All rights reserved.
+</footer>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

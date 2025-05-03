@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jaspersoft Community Dashboard - Login</title>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(rgba(0, 51, 102, 0.8), rgba(0, 51, 102, 0.8)), url('/background.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Navbar */
+        .navbar-custom {
+            background-color: #002060;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .navbar-custom .navbar-brand {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .login-container {
+            margin: auto;
+            background: white;
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            width: 400px;
+            text-align: center;
+        }
+
+        .login-container h1 {
+            margin-bottom: 25px;
+            color: #003366;
+            font-weight: bold;
+            font-size: 32px;
+        }
+
+        .login-container label {
+            display: block;
+            text-align: left;
+            margin: 10px 0 5px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .login-container input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+
+        .login-container button[type="submit"] {
+            width: 100%;
+            padding: 14px;
+            background-color: #0074cc;
+            border: none;
+            color: white;
+            border-radius: 6px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .login-container button[type="submit"]:hover {
+            background-color: #005fa3;
+        }
+
+        .error-message, .logout-message {
+            margin-top: 15px;
+            font-size: 15px;
+        }
+
+        .error-message {
+            color: red;
+        }
+
+        .logout-message {
+            color: green;
+        }
+
+        .password-wrapper {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-wrapper input {
+            width: 100%;
+            padding-right: 70px;
+            box-sizing: border-box;
+        }
+
+        .password-wrapper button {
+            position: absolute;
+            right: 10px;
+            top: 40%;
+            transform: translateY(-50%);
+            padding: 4px 8px;
+            background-color: #0074cc;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 11px;
+            width: 55px;
+            height: 30px;
+            line-height: 1;
+        }
+
+        .password-wrapper button:hover {
+            background-color: #005fa3;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #002060;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            font-size: 14px;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand mx-auto" href="#">Welcome to Jaspersoft Community</a>
+        </div>
+    </nav>
+
+    <!-- Login Form -->
+    <div class="login-container">
+        <h1>Login</h1>
+
+        <form th:action="@{/login}" method="post">
+            <label>Username:</label>
+            <input type="text" name="username" required>
+
+            <label>Password:</label>
+            <div class="password-wrapper">
+                <input type="password" name="password" id="passwordField" required>
+                <button type="button" id="togglePassword">Show</button>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+
+        <div th:if="${param.error}" class="error-message">
+            Invalid Username or Password
+        </div>
+
+        <div th:if="${param.logout}" class="logout-message">
+            You have been logged out successfully.
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        © 2025 Jaspersoft Community™. All rights reserved.
+    </footer>
+
+    <!-- JS for Password Show/Hide -->
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordField = document.getElementById('passwordField');
+
+        togglePassword.addEventListener('click', function () {
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            this.textContent = type === 'password' ? 'Show' : 'Hide';
+        });
+    </script>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

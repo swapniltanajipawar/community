@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin Dashboard</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .navbar-custom {
+            background-color: #002060;
+        }
+        .navbar-custom .navbar-brand, 
+        .navbar-custom .nav-link, 
+        .navbar-custom .navbar-text {
+            color: white;
+        }
+        .footer {
+            background-color: #002060;
+            color: white;
+            text-align: center;
+            padding: 10px 0;
+            margin-top: auto;
+        }
+        .card-button {
+            margin-bottom: 15px;
+            background-color: #003366;
+            color: white;
+            border: none;
+        }
+        .card-button:hover {
+            background-color: #004080;
+        }
+        .logout-btn {
+            background-color: #dc3545;
+            border: none;
+        }
+        .logout-btn:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header/Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">JASPERSOFT COMMUNITY™</a>
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item me-3">
+                        <span class="navbar-text">
+                           
+                         <strong th:text="${#authentication.name}">superuser</strong>
+                        </span>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link" href="#">Help</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-danger logout-btn" href="/logout">Log Out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+
+        <h1 class="mb-4 text-center">Welcome to Jaspersoft Community Admin Dashboard</h1>
+
+        <div class="d-grid gap-3 col-6 mx-auto">
+            <a href="/monthly-qa-summary" class="btn card-button">Monthly QA Summary</a>
+            <a href="/monthly-wiki-summary" class="btn card-button">Monthly Wiki Summary</a>
+            <a href="/qa-contributors" class="btn card-button">QA Contributors List</a>
+            <a href="/wiki-contributors" class="btn card-button">Wiki Contributors List</a>
+            <a href="/qa" class="btn card-button">QA Records</a>
+			<a href="/wiki" class="btn card-button">Wiki Records</a>
+            <a href="/top-contributors-qa" class="btn card-button">Top Contributors QA</a>
+            <a href="/top-contributors-wiki" class="btn card-button">Top Contributors Wiki</a>
+			<a href="/jaspersoft" class="btn card-button">Jaspersoft Community Dashboard</a>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+		© 2025 Jaspersoft Community™. All rights reserved.
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

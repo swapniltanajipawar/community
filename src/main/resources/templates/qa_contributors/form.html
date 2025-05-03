@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>QA Contributor Form</title>
+
+	<!-- Bootstrap 5 CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+
+	<style>
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			display: flex;
+			flex-direction: column;
+		}
+
+		body {
+			background-color: #f8f9fa;
+		}
+
+		main {
+			flex: 1 0 auto;
+			/* Main content should take remaining space */
+		}
+
+		footer {
+			background-color: #002060;
+			color: white;
+			text-align: center;
+			padding: 10px;
+			font-size: 14px;
+			flex-shrink: 0;
+			/* Prevent footer from shrinking */
+		}
+
+		.navbar-custom {
+			background-color: #002060;
+		}
+
+		.navbar-custom .navbar-brand,
+		.navbar-custom .nav-link,
+		.navbar-custom .navbar-text {
+			color: white;
+		}
+
+		.form-container {
+			margin-top: 30px;
+			margin-bottom: 30px;
+		}
+
+		.card {
+			border-radius: 12px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+		}
+
+		.navbar-brand {
+			font-weight: bold;
+			font-size: 24px;
+		}
+	</style>
+
+</head>
+
+<body class="bg-light">
+
+	<!-- Header/Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-custom">
+	    <div class="container-fluid">
+	        <a class="navbar-brand" href="#">JASPERSOFT COMMUNITY™</a>
+				<!-- Back Button -->
+			<a class="btn btn-outline-light me-3" href="/dashboard">← Back</a>
+	        <div class="collapse navbar-collapse justify-content-end">
+	            <ul class="navbar-nav align-items-center">
+	                <li class="nav-item me-3">
+	                    <span class="navbar-text">
+	                       
+	                     <strong th:text="${#authentication.name}">superuser</strong>
+	                    </span>
+	                </li>
+	                <li class="nav-item me-3">
+	                    <a class="nav-link" href="#">Help</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="btn btn-danger logout-btn" href="/logout">Log Out</a>
+	                </li>
+	            </ul>
+	        </div>
+	    </div>
+	</nav>
+
+	<!-- Main Content -->
+	<!-- Main Content -->
+	<main class="container form-container">
+		<div class="row justify-content-center">
+			<div class="col-md-8 col-lg-6">
+				<div class="card p-4">
+					<h3 class="text-center mb-4"
+						th:text="${qaContributorsList.id} != null ? 'Update QA Contributor' : 'Add QA Contributor'">
+						Add QA Contributor
+					</h3>
+
+					<!-- Form for adding or editing QA Contributor -->
+					<form
+						th:action="@{${qaContributorsList.id} == null ? '/qa-contributors' : '/qa-contributors/update/' + ${qaContributorsList.id}}"
+						th:object="${qaContributorsList}" method="post">
+
+						<!-- Hidden ID field for existing contributors -->
+						<input type="hidden" th:if="${qaContributorsList.id}" th:field="*{id}" />
+
+						<!-- Category Input -->
+						<!-- Category Dropdown -->
+						<div class="mb-3">
+							<label class="form-label">Category</label>
+							<select th:field="*{category}" class="form-select" required>
+								<option value="" disabled selected>Select a category</option>
+								<option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"
+								        th:selected="${cat == qaContributorsList.category}"></option>
+							</select>
+						</div>
+
+						<!-- Full Name Input -->
+						<div class="mb-3">
+							<label class="form-label">Full Name</label>
+							<input type="text" th:field="*{fullName}" class="form-control" placeholder="Enter full name"
+								required />
+						</div>
+
+						<!-- Submit and Cancel Buttons -->
+						<div class="d-grid gap-2 d-md-flex justify-content-md-between">
+							<button type="submit" class="btn btn-primary">Save</button>
+							<a th:href="@{/qa-contributors}" class="btn btn-secondary">Cancel</a>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<!-- Footer -->
+	<footer class="footer">
+		© 2025 Jaspersoft Community™. All rights reserved.
+	</footer>
+
+	<!-- Bootstrap 5 JS -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+
+</html>
