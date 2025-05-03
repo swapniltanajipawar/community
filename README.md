@@ -1,2 +1,2 @@
-# community
+## community
 Jaspersoft Community Admin Dashboard
