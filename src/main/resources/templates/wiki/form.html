@@ -2,139 +2,145 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Wiki Form - Jaspersoft Community Dashboard</title>
+	<meta charset="UTF-8">
+	<title>Wiki Form - Jaspersoft Community Dashboard</title>
 
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Bootstrap 5 CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-        }
+	<style>
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+			display: flex;
+			flex-direction: column;
+		}
 
-        body {
-            background-color: #f8f9fa;
-        }
+		body {
+			background-color: #f8f9fa;
+		}
 
-        main {
-            flex: 1 0 auto;
-        }
+		main {
+			flex: 1 0 auto;
+		}
 
-        footer {
-            background-color: #002060;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            font-size: 14px;
-            flex-shrink: 0;
-        }
+		footer {
+			background-color: #002060;
+			color: white;
+			text-align: center;
+			padding: 10px;
+			font-size: 14px;
+			flex-shrink: 0;
+		}
 
-        .navbar-custom {
-            background-color: #002060;
-        }
+		.navbar-custom {
+			background-color: #002060;
+		}
 
-        .navbar-custom .navbar-brand,
-        .navbar-custom .nav-link,
-        .navbar-custom .navbar-text {
-            color: white;
-        }
+		.navbar-custom .navbar-brand,
+		.navbar-custom .nav-link,
+		.navbar-custom .navbar-text {
+			color: white;
+		}
 
-        .card {
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-        }
+		.card {
+			border-radius: 12px;
+			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+		}
 
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 24px;
-        }
-    </style>
+		.navbar-brand {
+			font-weight: bold;
+			font-size: 24px;
+		}
+	</style>
 </head>
 
 <body>
 
-<!-- 🔵 Navbar -->
-<nav class="navbar navbar-expand-lg navbar-custom">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">JASPERSOFT COMMUNITY™</a>
-        <a class="btn btn-outline-light me-3" href="/dashboard">← Back</a>
-        <div class="collapse navbar-collapse justify-content-end">
-            <ul class="navbar-nav align-items-center">
-                <li class="nav-item me-3">
-                    <span class="navbar-text">
-                        <strong th:text="${#authentication.name}">superuser</strong>
-                    </span>
-                </li>
-                <li class="nav-item me-3">
-                    <a class="nav-link" href="#">Help</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-danger logout-btn" href="/logout">Log Out</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+	<!-- 🔵 Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-custom">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">JASPERSOFT COMMUNITY™</a>
+			<a class="btn btn-outline-light me-3" href="/dashboard">← Back</a>
+			<div class="collapse navbar-collapse justify-content-end">
+				<ul class="navbar-nav align-items-center">
+					<li class="nav-item me-3">
+						<span class="navbar-text">
+							<strong th:text="${#authentication.name}">superuser</strong>
+						</span>
+					</li>
+					<li class="nav-item me-3">
+						<a class="nav-link" href="#">Help</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-danger logout-btn" href="/logout">Log Out</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 
-<!-- 🧩 Main Content -->
-<main class="container mt-5">
-    <div class="card p-5">
-        <h2 class="mb-4" th:text="${wiki.id} != null ? 'Update Wiki Record' : 'Create New Wiki Record'">
-            Create New Wiki Record
-        </h2>
+	<!-- 🧩 Main Content -->
+	<main class="container mt-5">
+		<div class="card p-5">
+			<h2 class="mb-4" th:text="${wiki.id} != null ? 'Update Wiki Record' : 'Create New Wiki Record'">
+				Create New Wiki Record
+			</h2>
 
-        <form th:action="${wiki.id} != null ? @{'/wiki/update/' + ${wiki.id}} : @{/wiki}"
-              th:object="${wiki}" method="post">
+			<form th:action="${wiki.id} != null ? @{'/wiki/update/' + ${wiki.id}} : @{/wiki}" th:object="${wiki}"
+				method="post">
 
-            <!-- Contributor Name -->
-            <div class="mb-3">
-                <label for="contributorName" class="form-label">Contributor Name</label>
-                <select th:field="*{contributorName}" class="form-select" id="contributorName" required>
-                    <option value="" disabled selected>Select Contributor</option>
-                    <option th:each="c : ${contributors}" th:value="${c}" th:text="${c}"></option>
-                </select>
-            </div>
+				<!-- Contributor Name -->
+				<div class="mb-3">
+					<label for="contributorName" class="form-label">Contributor Name</label>
+					<select th:field="*{contributorName}" class="form-select" id="contributorName" required>
+						<option value="" disabled selected>Select Contributor</option>
+						<option th:each="c : ${contributors}" th:value="${c}" th:text="${c}"></option>
+					</select>
+				</div>
 
-            <!-- Articles Assigned -->
-            <div class="mb-3">
-                <label for="articlesAssigned" class="form-label">Articles Assigned</label>
-                <input type="number" th:field="*{articlesAssigned}" class="form-control" id="articlesAssigned" required min="0">
-            </div>
+				<!-- Articles Assigned -->
+				<div class="mb-3">
+					<label for="articlesAssigned" class="form-label">Articles Assigned</label>
+					<input type="number" class="form-control" id="articlesAssigned" name="articlesAssigned"
+						th:field="*{articlesAssigned}" th:value="*{articlesAssigned} == 0 ? '' : *{articlesAssigned}"
+						required>
+				</div>
 
-            <!-- Articles Updated -->
-            <div class="mb-3">
-                <label for="articlesUpdated" class="form-label">Articles Updated</label>
-                <input type="number" th:field="*{articlesUpdated}" class="form-control" id="articlesUpdated" required min="0">
-            </div>
+				<!-- Articles Updated -->
+				<div class="mb-3">
+					<label for="articlesUpdated" class="form-label">Articles Updated</label>
+					<input type="number" class="form-control" id="articlesUpdated" name="articlesUpdated"
+						th:field="*{articlesUpdated}" th:value="*{articlesUpdated} == 0 ? '' : *{articlesUpdated}"
+						required>
+				</div>
 
-            <!-- Month -->
-            <div class="mb-3">
-                <label for="month" class="form-label">Month</label>
-                <select th:field="*{month}" class="form-select" id="month" required>
-                    <option value="" disabled selected>Select Month</option>
-                    <option th:each="m : ${months}" th:value="${m}" th:text="${m}"></option>
-                </select>
-            </div>
+				<!-- Month -->
+				<div class="mb-3">
+					<label for="month" class="form-label">Month</label>
+					<select th:field="*{month}" class="form-select" id="month" required>
+						<option value="" disabled selected>Select Month</option>
+						<option th:each="m : ${months}" th:value="${m}" th:text="${m}"></option>
+					</select>
+				</div>
 
-            <!-- Buttons -->
-            <div class="d-flex">
-                <button type="submit" class="btn btn-primary me-3">Submit</button>
-                <a th:href="@{/wiki}" class="btn btn-secondary">Cancel</a>
-            </div>
-        </form>
-    </div>
-</main>
+				<!-- Buttons -->
+				<div class="d-flex">
+					<button type="submit" class="btn btn-primary me-3">Submit</button>
+					<a th:href="@{/wiki}" class="btn btn-secondary">Cancel</a>
+				</div>
+			</form>
+		</div>
+	</main>
 
-<!-- 🧩 Footer -->
-<footer>
-    © 2025 Jaspersoft Community™. All rights reserved.
-</footer>
+	<!-- 🧩 Footer -->
+	<footer>
+		© 2025 Jaspersoft Community™. All rights reserved.
+	</footer>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Bootstrap JS -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

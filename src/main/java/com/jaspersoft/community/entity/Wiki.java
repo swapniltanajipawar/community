@@ -14,27 +14,55 @@ public class Wiki {
     private String contributorName;
 
     @Column(name = "articles_assigned")
-    private int articlesAssigned;
+    private Integer articlesAssigned;
 
     @Column(name = "articles_updated")
-    private int articlesUpdated;
+    private Integer articlesUpdated;
 
     @Column(name = "month", length = 3)
     private String month;
-
+    
+    
     // Getters and Setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
 
-    public String getContributorName() { return contributorName; }
-    public void setContributorName(String contributorName) { this.contributorName = contributorName; }
+	public Integer getId() {
+		return id;
+	}
 
-    public int getArticlesAssigned() { return articlesAssigned; }
-    public void setArticlesAssigned(int articlesAssigned) { this.articlesAssigned = articlesAssigned; }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public int getArticlesUpdated() { return articlesUpdated; }
-    public void setArticlesUpdated(int articlesUpdated) { this.articlesUpdated = articlesUpdated; }
+	public String getContributorName() {
+		return contributorName;
+	}
 
-    public String getMonth() { return month; }
-    public void setMonth(String month) { this.month = month; }
+	public void setContributorName(String contributorName) {
+		this.contributorName = contributorName;
+	}
+
+	public Integer getArticlesAssigned() {
+		return articlesAssigned;
+	}
+
+	public void setArticlesAssigned(Integer articlesAssigned) {
+		this.articlesAssigned = articlesAssigned;
+	}
+
+	public Integer getArticlesUpdated() {
+		return articlesUpdated;
+	}
+
+	public void setArticlesUpdated(Integer articlesUpdated) {
+		this.articlesUpdated = articlesUpdated;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+   
 }

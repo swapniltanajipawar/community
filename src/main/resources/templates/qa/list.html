@@ -109,10 +109,10 @@
         <div class="col-auto">
             <select class="form-select" name="month" id="month">
                 <option value="">-- All Months --</option>
-                <option th:each="i : ${#numbers.sequence(1,12)}"
-                        th:value="${i}"
-                        th:text="${i}"
-                        th:selected="${month} == ${i}">
+                <option th:each="m : ${months}"
+                        th:value="${m}"
+                        th:text="${m}"
+                        th:selected="${month} == ${m}">
                 </option>
             </select>
         </div>
@@ -129,8 +129,9 @@
                     <th>ID</th>
                     <th>Contributor Name</th>
                     <th>Questions Assigned</th>
-                    <th>Pending Community User</th>
-                    <th>Answered</th>
+                    <th>Question Pending on Community User</th>
+                    <th>Questions Pending for Contribution</th> <!-- ✅ Added column -->
+                    <th>Question Answered</th>
                     <th>Month</th>
                     <th>Actions</th>
                 </tr>
@@ -140,9 +141,10 @@
                     <td th:text="${qa.id}">1</td>
                     <td th:text="${qa.contributorName}">John Doe</td>
                     <td th:text="${qa.questionsAssigned}">10</td>
-                    <td th:text="${qa.pendingCommunityUser}">2</td>
-                    <td th:text="${qa.answered}">8</td>
-                    <td th:text="${qa.month}">4</td>
+                    <td th:text="${qa.questionsPendingOnCommunityUser}">2</td>
+                    <td th:text="${qa.questionsPendingContribution}">5</td> <!-- ✅ Data -->
+                    <td th:text="${qa.questionsAnswered}">8</td>
+                    <td th:text="${qa.month}">JAN</td>
                     <td>
                         <div class="d-flex gap-2" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
                             <a class="btn btn-sm btn-primary" th:href="@{'/qa/update/' + ${qa.id}}">Edit</a>

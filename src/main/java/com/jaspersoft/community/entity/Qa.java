@@ -1,40 +1,87 @@
 package com.jaspersoft.community.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "qa")
 public class Qa {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "contributor_name")
     private String contributorName;
+    
+    @Column(name = "questions_assigned")
     private Integer questionsAssigned;
-    private Integer pendingCommunityUser;
-    private Integer answered;
-    private Integer month;
+    
+    @Column(name = "questions_pending_on_community_user")
+    private Integer questionsPendingOnCommunityUser;
+    
+    @Column(name = "questions_pending_contribution")
+    private Integer questionsPendingContribution; // ✅ New field
+    
+    @Column(name = "questions_answered")
+    private Integer questionsAnswered;
+    
+    @Column(name = "month", length = 3)
+    private String month;
 
-    // Getters and Setters
-    public Integer getId() { return id; }
-    public void setId(Integer id) { this.id = id; }
+	public Integer getId() {
+		return id;
+	}
 
-    public String getContributorName() { return contributorName; }
-    public void setContributorName(String contributorName) { this.contributorName = contributorName; }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public Integer getQuestionsAssigned() { return questionsAssigned; }
-    public void setQuestionsAssigned(Integer questionsAssigned) { this.questionsAssigned = questionsAssigned; }
+	public String getContributorName() {
+		return contributorName;
+	}
 
-    public Integer getPendingCommunityUser() { return pendingCommunityUser; }
-    public void setPendingCommunityUser(Integer pendingCommunityUser) { this.pendingCommunityUser = pendingCommunityUser; }
+	public void setContributorName(String contributorName) {
+		this.contributorName = contributorName;
+	}
 
-    public Integer getAnswered() { return answered; }
-    public void setAnswered(Integer answered) { this.answered = answered; }
+	public Integer getQuestionsAssigned() {
+		return questionsAssigned;
+	}
 
-    public Integer getMonth() { return month; }
-    public void setMonth(Integer month) { this.month = month; }
+	public void setQuestionsAssigned(Integer questionsAssigned) {
+		this.questionsAssigned = questionsAssigned;
+	}
+
+	public Integer getQuestionsPendingOnCommunityUser() {
+		return questionsPendingOnCommunityUser;
+	}
+
+	public void setQuestionsPendingOnCommunityUser(Integer questionsPendingOnCommunityUser) {
+		this.questionsPendingOnCommunityUser = questionsPendingOnCommunityUser;
+	}
+
+	public Integer getQuestionsPendingContribution() {
+		return questionsPendingContribution;
+	}
+
+	public void setQuestionsPendingContribution(Integer questionsPendingContribution) {
+		this.questionsPendingContribution = questionsPendingContribution;
+	}
+
+	public Integer getQuestionsAnswered() {
+		return questionsAnswered;
+	}
+
+	public void setQuestionsAnswered(Integer questionsAnswered) {
+		this.questionsAnswered = questionsAnswered;
+	}
+
+	public String getMonth() {
+		return month;
+	}
+
+	public void setMonth(String month) {
+		this.month = month;
+	}
+
 }

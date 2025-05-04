@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/qa")
@@ -20,53 +21,52 @@ public class QaController {
     private QaRepository qaRepository;
 
     @Autowired
-    private QaContributorsListRepository contributorsListRepository;
+    private QaContributorsListRepository QaContributorsListRepository;
 
-    // ✅ Modified method to support optional month filtering
+    private final List<String> months = List.of("JAN", "FEB", "MAR", "APR", "MAY", "JUN",
+                                               "JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
+
+    // Fetch the list of QA records based on selected month or show all if no month is selected
     @GetMapping
-    public String listQa(@RequestParam(required = false) Integer month, Model model) {
-        List<Qa> qaList;
-
-        if (month != null) {
-            qaList = qaRepository.findByMonth(month); // This method must be present in QaRepository
-        } else {
-            qaList = qaRepository.findAll();
-        }
+    public String listQa(@RequestParam(required = false) String month, Model model) {
+        List<Qa> qaList = (month != null && !month.isEmpty()) ? 
+                qaRepository.findByMonth(month) : qaRepository.findAll();
 
         model.addAttribute("qaList", qaList);
-        model.addAttribute("month", month); // 🔁 Send selected month back to view
-
+        model.addAttribute("month", month);
+        model.addAttribute("months", months);
         return "qa/list";
     }
 
+    // Show the form for creating a new QA record
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("qa", new Qa());
-
-        List<QaContributorsList> contributors = contributorsListRepository.findAll();
-        model.addAttribute("contributors", contributors);
-
+        model.addAttribute("contributors", getContributorNames());  // Fetch contributor names dynamically
+        model.addAttribute("months", months);
         return "qa/form";
     }
 
+    // Show the form for updating an existing QA record
+    @GetMapping("/update/{id}")
+    public String showUpdateForm(@PathVariable Integer id, Model model) {
+        Qa qa = qaRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid Qa ID: " + id));
+        
+        model.addAttribute("qa", qa);
+        model.addAttribute("contributors", getContributorNames());  // Fetch contributor names dynamically
+        model.addAttribute("months", months);
+        return "qa/form";
+    }
+
+    // Save a new QA record
     @PostMapping
     public String saveQa(@ModelAttribute("qa") Qa qa) {
         qaRepository.save(qa);
         return "redirect:/qa";
     }
 
-    @GetMapping("/update/{id}")
-    public String showUpdateForm(@PathVariable Integer id, Model model) {
-        Qa qa = qaRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid QA ID: " + id));
-        model.addAttribute("qa", qa);
-
-        List<QaContributorsList> contributors = contributorsListRepository.findAll();
-        model.addAttribute("contributors", contributors);
-
-        return "qa/form";
-    }
-
+    // Update an existing QA record
     @PostMapping("/update/{id}")
     public String updateQa(@PathVariable Integer id, @ModelAttribute("qa") Qa qa) {
         qa.setId(id);
@@ -74,9 +74,18 @@ public class QaController {
         return "redirect:/qa";
     }
 
+    // Delete a QA record
     @GetMapping("/delete/{id}")
     public String deleteQa(@PathVariable Integer id) {
         qaRepository.deleteById(id);
         return "redirect:/qa";
+    }
+
+    // 🔧 Utility method to get contributor full names dynamically
+    private List<String> getContributorNames() {
+        return QaContributorsListRepository.findAll()
+                .stream()
+                .map(QaContributorsList::getFullName)
+                .collect(Collectors.toList());
     }
 }
