@@ -105,7 +105,10 @@
 				<!-- Title and Add Button -->
 				<div class="d-flex justify-content-between align-items-center mb-4">
 					<h3 class="mb-0">Top Contributors QA</h3>
-					<a href="/top-contributors-qa/new" class="btn btn-success">Add New Record</a>
+
+					<div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+						<a href="/top-contributors-qa/new" class="btn btn-success">Add New Record</a>
+					</div>
 				</div>
 
 				<!-- ✅ Filter by Month -->

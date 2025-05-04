@@ -2,147 +2,151 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QA Contributors - Jaspersoft Community Dashboard</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>QA Contributors - Jaspersoft Community Dashboard</title>
 
-    <!-- Bootstrap 5 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Bootstrap 5 CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
+	<style>
+		html,
+		body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
 
-        body {
-            background-color: #f8f9fa;
-        }
+		body {
+			background-color: #f8f9fa;
+		}
 
-        .navbar-custom {
-            background-color: #002060;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1030;
-        }
+		.navbar-custom {
+			background-color: #002060;
+			position: fixed;
+			top: 0;
+			width: 100%;
+			z-index: 1030;
+		}
 
-        .navbar-custom .navbar-brand,
-        .navbar-custom .nav-link,
-        .navbar-custom .navbar-text {
-            color: white;
-        }
+		.navbar-custom .navbar-brand,
+		.navbar-custom .nav-link,
+		.navbar-custom .navbar-text {
+			color: white;
+		}
 
-        footer {
-            background-color: #002060;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            font-size: 14px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            z-index: 1030;
-        }
+		footer {
+			background-color: #002060;
+			color: white;
+			text-align: center;
+			padding: 10px;
+			font-size: 14px;
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+			z-index: 1030;
+		}
 
-        .navbar-brand {
-            font-weight: bold;
-            font-size: 24px;
-        }
+		.navbar-brand {
+			font-weight: bold;
+			font-size: 24px;
+		}
 
-        main {
-            padding-top: 70px;
-            padding-bottom: 60px;
-        }
+		main {
+			padding-top: 70px;
+			padding-bottom: 60px;
+		}
 
 		.table-responsive {
-		    max-height: 90vh;
-		    overflow-y: auto;
+			max-height: 90vh;
+			overflow-y: auto;
 		}
 
 		.table thead th {
-		    position: sticky;
-		    top: 0;
-		    background-color: #002060 !important;
-		    color: white;
-		    z-index: 10;
+			position: sticky;
+			top: 0;
+			background-color: #002060 !important;
+			color: white;
+			z-index: 10;
 		}
-
-    </style>
+	</style>
 </head>
 
 <body>
 
-<!-- 🔵 Header/Navbar -->
-<nav class="navbar navbar-expand-lg navbar-custom">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">JASPERSOFT COMMUNITY™</a>
-        <a class="btn btn-outline-light me-3" href="/dashboard">← Back</a>
-        <div class="collapse navbar-collapse justify-content-end">
-            <ul class="navbar-nav align-items-center">
-                <li class="nav-item me-3">
-                    <span class="navbar-text">
-                        <strong th:text="${#authentication.name}">superuser</strong>
-                    </span>
-                </li>
-                <li class="nav-item me-3">
-                    <a class="nav-link" href="#">Help</a>
-                </li>
-                <li class="nav-item">
-                    <a class="btn btn-danger logout-btn" href="/logout">Log Out</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+	<!-- 🔵 Header/Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-custom">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">JASPERSOFT COMMUNITY™</a>
+			<a class="btn btn-outline-light me-3" href="/dashboard">← Back</a>
+			<div class="collapse navbar-collapse justify-content-end">
+				<ul class="navbar-nav align-items-center">
+					<li class="nav-item me-3">
+						<span class="navbar-text">
+							<strong th:text="${#authentication.name}">superuser</strong>
+						</span>
+					</li>
+					<li class="nav-item me-3">
+						<a class="nav-link" href="#">Help</a>
+					</li>
+					<li class="nav-item">
+						<a class="btn btn-danger logout-btn" href="/logout">Log Out</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 
-<!-- 🧩 Main Content -->
-<main class="container my-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2 class="mb-0">QA Contributors List</h2>
-        <a th:href="@{/qa-contributors/new}" class="btn btn-success">+ Add New Contributor</a>
-    </div>
+	<!-- 🧩 Main Content -->
+	<main class="container my-5">
+		<div class="d-flex justify-content-between align-items-center mb-4">
+			<h2 class="mb-0">QA Contributors List</h2>
+			<div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+				<a th:href="@{/qa-contributors/new}" class="btn btn-success">+ Add New Contributor</a>
+			</div>
+		</div>
 
-    <!-- 📋 Table with Floating Header -->
-    <div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
-        <table class="table table-bordered table-striped shadow-sm mb-0">
-            <thead>
-                <tr>
-                    <th style="position: sticky; top: 0; background-color: #002060; color: white;">ID</th>
-                    <th style="position: sticky; top: 0; background-color: #002060; color: white;">Category</th>
-                    <th style="position: sticky; top: 0; background-color: #002060; color: white;">Full Name</th>
-                    <th style="position: sticky; top: 0; background-color: #002060; color: white;" class="text-center">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="contributor : ${contributorsList}">
-                    <td th:text="${contributor.id}">1</td>
-                    <td th:text="${contributor.category}">Category</td>
-                    <td th:text="${contributor.fullName}">Full Name</td>
-                    <td class="text-center">
-                        <div class="d-flex gap-2" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-                            <a class="btn btn-sm btn-primary"
-                               th:href="@{/qa-contributors/update/{id}(id=${contributor.id})}">Edit</a>
-                            <a class="btn btn-sm btn-danger"
-                               th:href="@{/qa-contributors/delete/{id}(id=${contributor.id})}"
-                               onclick="return confirm('Are you sure you want to delete?');">Delete</a>
-                        </div>
-                        <span th:if="${#authorization.expression('hasRole(''USER'')')}">View Only</span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</main>
+		<!-- 📋 Table with Floating Header -->
+		<div class="table-responsive" style="max-height: 70vh; overflow-y: auto;">
+			<table class="table table-bordered table-striped shadow-sm mb-0">
+				<thead>
+					<tr>
+						<th style="position: sticky; top: 0; background-color: #002060; color: white;">ID</th>
+						<th style="position: sticky; top: 0; background-color: #002060; color: white;">Category</th>
+						<th style="position: sticky; top: 0; background-color: #002060; color: white;">Full Name</th>
+						<th style="position: sticky; top: 0; background-color: #002060; color: white;"
+							class="text-center">Actions</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="contributor : ${contributorsList}">
+						<td th:text="${contributor.id}">1</td>
+						<td th:text="${contributor.category}">Category</td>
+						<td th:text="${contributor.fullName}">Full Name</td>
+						<td class="text-center">
+							<div class="d-flex gap-2" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+								<a class="btn btn-sm btn-primary"
+									th:href="@{/qa-contributors/update/{id}(id=${contributor.id})}">Edit</a>
+								<a class="btn btn-sm btn-danger"
+									th:href="@{/qa-contributors/delete/{id}(id=${contributor.id})}"
+									onclick="return confirm('Are you sure you want to delete?');">Delete</a>
+							</div>
+							<span th:if="${#authorization.expression('hasRole(''USER'')')}">View Only</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</main>
 
-<!-- 🧩 Footer -->
-<footer>
-    © 2025 Jaspersoft Community™. All rights reserved.
-</footer>
+	<!-- 🧩 Footer -->
+	<footer>
+		© 2025 Jaspersoft Community™. All rights reserved.
+	</footer>
 
-<!-- Bootstrap Bundle JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+	<!-- Bootstrap Bundle JS -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>

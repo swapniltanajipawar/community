@@ -101,7 +101,9 @@
 	<main class="container mt-4">
 		<div class="d-flex justify-content-between align-items-center mb-4">
 			<h2 class="mb-0">Monthly Wiki Summary</h2>
-			<a href="/monthly-wiki-summary/new" class="btn btn-success">Add New Record</a>
+			<div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+				<a href="/monthly-wiki-summary/new" class="btn btn-success">Add New Record</a>
+			</div>
 		</div>
 
 		<!-- 🔽 Month Filter Dropdown -->
