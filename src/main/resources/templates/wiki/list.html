@@ -97,25 +97,25 @@
         </div>
     </div>
 
-    <!-- Filter by Month -->
-    <form class="row g-3 mb-4" method="get" th:action="@{/wiki}">
-        <div class="col-auto">
-            <label for="month" class="col-form-label">Filter by Month:</label>
-        </div>
-        <div class="col-auto">
-            <select class="form-select" name="month" id="month">
-                <option value="">-- All Months --</option>
-                <option th:each="mon : ${months}"
-                        th:value="${mon}"
-                        th:text="${mon}"
-                        th:selected="${month} == ${mon}">
-                </option>
-            </select>
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary">Apply Filter</button>
-        </div>
-    </form>
+				    <!-- Filter by Month -->
+	<form class="row g-3 mb-4" method="get" th:action="@{/wiki}">
+	    <div class="col-auto">
+	        <label for="month" class="col-form-label">Filter by Month:</label>
+	    </div>
+	    <div class="col-auto">
+	        <select class="form-select" name="month" id="month">
+	            <option value="">-- All Months --</option>
+	            <option th:each="mon : ${months}"
+	                    th:value="${mon}"
+	                    th:text="${mon}"
+	                    th:selected="${month} == ${mon}">
+	            </option>
+	        </select>
+	    </div>
+	    <div class="col-auto">
+	        <button type="submit" class="btn btn-primary">Apply Filter</button>
+	    </div>
+	</form>
 
     <!-- Sticky Header Table -->
     <div class="table-wrapper shadow-sm">
