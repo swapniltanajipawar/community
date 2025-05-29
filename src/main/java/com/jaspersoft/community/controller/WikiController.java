@@ -23,7 +23,7 @@ public class WikiController {
     private WikiContributorsListRepository wikiContributorsListRepository;
 
     private final List<String> months = List.of("JAN", "FEB", "MAR", "APR", "MAY", "JUN",
-                                                "JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
+                                                 "JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
 
     @GetMapping
     public String listWiki(@RequestParam(required = false) String month, Model model) {
@@ -48,7 +48,7 @@ public class WikiController {
     @PostMapping
     public String saveWiki(@ModelAttribute("wiki") Wiki wiki) {
         wikiRepository.save(wiki);
-        return "redirect:/wiki";
+        return "redirect:/wiki"; // Already correct: Spring handles the context path
     }
 
     @GetMapping("/update/{id}")
@@ -65,13 +65,13 @@ public class WikiController {
     public String updateWiki(@PathVariable Integer id, @ModelAttribute("wiki") Wiki wiki) {
         wiki.setId(id);
         wikiRepository.save(wiki);
-        return "redirect:/wiki";
+        return "redirect:/wiki"; // Already correct: Spring handles the context path
     }
 
     @GetMapping("/delete/{id}")
     public String deleteWiki(@PathVariable Integer id) {
         wikiRepository.deleteById(id);
-        return "redirect:/wiki";
+        return "redirect:/wiki"; // Already correct: Spring handles the context path
     }
 
     // 🔧 Utility method to get contributor full names

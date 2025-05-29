@@ -56,7 +56,7 @@ public class TopContributorsWikiController {
     @PostMapping
     public String saveNewRecord(@ModelAttribute TopContributorsWiki topContributorsWiki) {
         topContributorsWikiRepository.save(topContributorsWiki);
-        return "redirect:/top-contributors-wiki";
+        return "redirect:/top-contributors-wiki"; // Already correct: Spring handles the context path
     }
 
     @GetMapping("/update/{id}")
@@ -74,13 +74,13 @@ public class TopContributorsWikiController {
     public String updateRecord(@PathVariable Integer id, @ModelAttribute TopContributorsWiki topContributorsWiki) {
         topContributorsWiki.setId(id);
         topContributorsWikiRepository.save(topContributorsWiki);
-        return "redirect:/top-contributors-wiki";
+        return "redirect:/top-contributors-wiki"; // Already correct: Spring handles the context path
     }
 
     @GetMapping("/delete/{id}")
     public String deleteRecord(@PathVariable Integer id) {
         topContributorsWikiRepository.deleteById(id);
-        return "redirect:/top-contributors-wiki";
+        return "redirect:/top-contributors-wiki"; // Already correct: Spring handles the context path
     }
 
     private List<String> getUniqueContributors(List<TopContributorsWiki> records) {

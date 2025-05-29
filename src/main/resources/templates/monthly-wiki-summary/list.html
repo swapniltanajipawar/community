@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<title>Monthly Wiki Summary - Jaspersoft Community Dashboard</title>
+	<title>Monthly Wiki Summary List</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 	<style>
@@ -74,11 +74,10 @@
 
 <body>
 
-	<!-- 🔵 Header/Navbar -->
 	<nav class="navbar navbar-expand-lg navbar-custom">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#">JASPERSOFT COMMUNITY™</a>
-			<a class="btn btn-outline-light me-3" href="/dashboard">← Back</a>
+			<a class="navbar-brand" th:href="@{/dashboard}">JASPERSOFT COMMUNITY™</a>
+			<a class="btn btn-outline-light me-3" th:href="@{/dashboard}">← Back</a>
 			<div class="collapse navbar-collapse justify-content-end">
 				<ul class="navbar-nav align-items-center">
 					<li class="nav-item me-3">
@@ -90,23 +89,21 @@
 						<a class="nav-link" href="#">Help</a>
 					</li>
 					<li class="nav-item">
-						<a class="btn btn-danger logout-btn" href="/logout">Log Out</a>
+						<a class="btn btn-danger logout-btn" th:href="@{/logout}">Log Out</a>
 					</li>
 				</ul>
 			</div>
 		</div>
 	</nav>
 
-	<!-- 🧩 Main Content -->
 	<main class="container mt-4">
 		<div class="d-flex justify-content-between align-items-center mb-4">
 			<h2 class="mb-0">Monthly Wiki Summary</h2>
 			<div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
-				<a href="/monthly-wiki-summary/new" class="btn btn-success">Add New Record</a>
+				<a th:href="@{/monthly-wiki-summary/new}" class="btn btn-success">Add Monthly Wiki Record</a>
 			</div>
 		</div>
 
-		<!-- 🔽 Month Filter Dropdown -->
 		<form class="row g-3 mb-4" method="get" th:action="@{/monthly-wiki-summary}">
 			<div class="col-auto">
 				<label for="month" class="col-form-label">Filter by Month:</label>
@@ -115,7 +112,7 @@
 				<select class="form-select" name="month" id="month">
 					<option value="">-- All Months --</option>
 					<option th:each="mon : ${months}" th:value="${mon}" th:text="${mon}"
-						th:selected="${month} == ${mon}">
+						th:selected="${selectedMonth} == ${mon}">
 					</option>
 				</select>
 			</div>
@@ -161,12 +158,10 @@
 		</div>
 	</main>
 
-	<!-- 🧩 Footer -->
 	<footer>
 		© 2025 Jaspersoft Community™. All rights reserved.
 	</footer>
 
-	<!-- Bootstrap Bundle JS -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

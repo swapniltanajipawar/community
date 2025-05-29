@@ -21,15 +21,15 @@ public class QaController {
     private QaRepository qaRepository;
 
     @Autowired
-    private QaContributorsListRepository QaContributorsListRepository;
+    private QaContributorsListRepository qaContributorsListRepository; // Corrected casing for consistency
 
     private final List<String> months = List.of("JAN", "FEB", "MAR", "APR", "MAY", "JUN",
-                                               "JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
+                                                 "JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
 
     // Fetch the list of QA records based on selected month or show all if no month is selected
     @GetMapping
     public String listQa(@RequestParam(required = false) String month, Model model) {
-        List<Qa> qaList = (month != null && !month.isEmpty()) ? 
+        List<Qa> qaList = (month != null && !month.isEmpty()) ?
                 qaRepository.findByMonth(month) : qaRepository.findAll();
 
         model.addAttribute("qaList", qaList);
@@ -52,7 +52,7 @@ public class QaController {
     public String showUpdateForm(@PathVariable Integer id, Model model) {
         Qa qa = qaRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Invalid Qa ID: " + id));
-        
+
         model.addAttribute("qa", qa);
         model.addAttribute("contributors", getContributorNames());  // Fetch contributor names dynamically
         model.addAttribute("months", months);
@@ -63,7 +63,7 @@ public class QaController {
     @PostMapping
     public String saveQa(@ModelAttribute("qa") Qa qa) {
         qaRepository.save(qa);
-        return "redirect:/qa";
+        return "redirect:/qa"; // Correct and standard way to redirect
     }
 
     // Update an existing QA record
@@ -71,19 +71,19 @@ public class QaController {
     public String updateQa(@PathVariable Integer id, @ModelAttribute("qa") Qa qa) {
         qa.setId(id);
         qaRepository.save(qa);
-        return "redirect:/qa";
+        return "redirect:/qa"; // Correct and standard way to redirect
     }
 
     // Delete a QA record
     @GetMapping("/delete/{id}")
     public String deleteQa(@PathVariable Integer id) {
         qaRepository.deleteById(id);
-        return "redirect:/qa";
+        return "redirect:/qa"; // Correct and standard way to redirect
     }
 
     // 🔧 Utility method to get contributor full names dynamically
     private List<String> getContributorNames() {
-        return QaContributorsListRepository.findAll()
+        return qaContributorsListRepository.findAll()
                 .stream()
                 .map(QaContributorsList::getFullName)
                 .collect(Collectors.toList());

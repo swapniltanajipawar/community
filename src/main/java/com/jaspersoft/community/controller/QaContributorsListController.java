@@ -37,7 +37,7 @@ public class QaContributorsListController {
     @PostMapping
     public String saveQaContributor(@ModelAttribute("qaContributorsList") QaContributorsList qaContributorsList) {
         repository.save(qaContributorsList);
-        return "redirect:/qa-contributors";
+        return "redirect:/qa-contributors"; // Already correct: Spring handles the context path
     }
 
     @GetMapping("/update/{id}")
@@ -53,12 +53,12 @@ public class QaContributorsListController {
     public String updateQaContributor(@PathVariable Long id, @ModelAttribute("qaContributorsList") QaContributorsList qaContributorsList) {
         qaContributorsList.setId(id);
         repository.save(qaContributorsList);
-        return "redirect:/qa-contributors";
+        return "redirect:/qa-contributors"; // Already correct: Spring handles the context path
     }
 
     @GetMapping("/delete/{id}")
     public String deleteQaContributor(@PathVariable Long id) {
         repository.deleteById(id);
-        return "redirect:/qa-contributors";
+        return "redirect:/qa-contributors"; // Already correct: Spring handles the context path
     }
 }

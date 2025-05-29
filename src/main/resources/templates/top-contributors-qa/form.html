@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<title>Top Contributors QA Form</title>
+	<title>Add New Top QA Contributors</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<style>
 		html, body {
@@ -43,11 +43,10 @@
 
 <body>
 
-	<!-- Header/Navbar -->
 	<nav class="navbar navbar-expand-lg navbar-custom">
 		<div class="container-fluid">
-			<a class="navbar-brand" href="#">JASPERSOFT COMMUNITY™</a>
-			<a class="btn btn-outline-light me-3" href="/dashboard">← Back</a>
+			<a class="navbar-brand" th:href="@{/dashboard}">JASPERSOFT COMMUNITY™</a>
+			<a class="btn btn-outline-light me-3" th:href="@{/dashboard}">← Back</a>
 			<div class="collapse navbar-collapse justify-content-end">
 				<ul class="navbar-nav align-items-center">
 					<li class="nav-item me-3">
@@ -56,13 +55,12 @@
 						</span>
 					</li>
 					<li class="nav-item me-3"><a class="nav-link" href="#">Help</a></li>
-					<li class="nav-item"><a class="btn btn-danger logout-btn" href="/logout">Log Out</a></li>
+					<li class="nav-item"><a class="btn btn-danger logout-btn" th:href="@{/logout}">Log Out</a></li>
 				</ul>
 			</div>
 		</div>
 	</nav>
 
-	<!-- Main Content -->
 	<main class="container form-container">
 		<div class="row justify-content-center">
 			<div class="col-md-8 col-lg-6">
@@ -75,11 +73,10 @@
 						th:action="@{${topContributorsQa.id} == null ? '/top-contributors-qa' : '/top-contributors-qa/update/' + ${topContributorsQa.id}}"
 						th:object="${topContributorsQa}" method="post">
 
-						<!-- Contributor Name Dropdown -->
 						<div class="mb-3">
 							<label class="form-label">Contributor Name</label>
 							<select class="form-select" th:field="*{contributorName}" required>
-								<option value="" disabled selected>Select Contributor</option>
+								<option value="">Select Contributor</option>
 								<option th:each="contributor : ${contributors}"
 										th:value="${contributor.fullName}"
 										th:text="${contributor.fullName}">
@@ -87,25 +84,22 @@
 							</select>
 						</div>
 
-						<!-- Team Dropdown -->
 						<div class="mb-3">
 							<label class="form-label">Team Name</label>
 							<select class="form-select" th:field="*{teamName}" required>
-								<option value="" disabled selected>Select Team</option>
+								<option value="">Select Team</option>
 								<option th:each="team : ${teams}" th:value="${team}" th:text="${team}"></option>
 							</select>
 						</div>
 
-						<!-- Month Dropdown -->
 						<div class="mb-3">
 							<label class="form-label">Month</label>
 							<select class="form-select" th:field="*{month}" required>
-								<option value="" disabled selected>Select Month</option>
+								<option value="">Select Month</option>
 								<option th:each="month : ${months}" th:value="${month}" th:text="${month}"></option>
 							</select>
 						</div>
 
-						<!-- Buttons -->
 						<div class="d-grid gap-2 d-md-flex justify-content-md-between">
 							<button type="submit" class="btn btn-primary">Save</button>
 							<a th:href="@{/top-contributors-qa}" class="btn btn-secondary">Cancel</a>
@@ -121,7 +115,6 @@
 		© 2025 Jaspersoft Community™. All rights reserved.
 	</footer>
 
-	<!-- Bootstrap JS -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

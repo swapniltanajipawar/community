@@ -40,7 +40,7 @@ public class WikiContributorsListController {
 	@PostMapping
 	public String saveContributor(@ModelAttribute("contributor") WikiContributorsList contributor) {
 		repository.save(contributor);
-		return "redirect:/wiki-contributors";
+		return "redirect:/wiki-contributors"; // Already correct: Spring handles the context path
 	}
 
 	// Show form to update contributor
@@ -59,13 +59,13 @@ public class WikiContributorsListController {
 			@ModelAttribute("contributor") WikiContributorsList contributor) {
 		contributor.setId(id);
 		repository.save(contributor);
-		return "redirect:/wiki-contributors";
+		return "redirect:/wiki-contributors"; // Already correct: Spring handles the context path
 	}
 
 	// Delete contributor
 	@GetMapping("/delete/{id}")
 	public String deleteContributor(@PathVariable Long id) {
 		repository.deleteById(id);
-		return "redirect:/wiki-contributors";
+		return "redirect:/wiki-contributors"; // Already correct: Spring handles the context path
 	}
 }

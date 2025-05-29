@@ -43,6 +43,7 @@ public class MonthlyWikiSummaryController {
     @PostMapping
     public String saveNewRecord(@ModelAttribute MonthlyWikiSummary monthlyWikiSummary) {
         monthlyWikiSummaryRepository.save(monthlyWikiSummary);
+        // Corrected: Using standard Spring redirect. Spring handles the context path automatically.
         return "redirect:/monthly-wiki-summary";
     }
 
@@ -58,12 +59,14 @@ public class MonthlyWikiSummaryController {
     public String updateRecord(@PathVariable Integer id, @ModelAttribute MonthlyWikiSummary monthlyWikiSummary) {
         monthlyWikiSummary.setId(id);
         monthlyWikiSummaryRepository.save(monthlyWikiSummary);
+        // Corrected: Using standard Spring redirect. Spring handles the context path automatically.
         return "redirect:/monthly-wiki-summary";
     }
 
     @GetMapping("/delete/{id}")
     public String deleteRecord(@PathVariable Integer id) {
         monthlyWikiSummaryRepository.deleteById(id);
+        // Corrected: Using standard Spring redirect. Spring handles the context path automatically.
         return "redirect:/monthly-wiki-summary";
     }
 }

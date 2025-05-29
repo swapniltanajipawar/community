@@ -52,7 +52,7 @@ public class TopContributorsQaController {
     @PostMapping
     public String saveNewRecord(@ModelAttribute TopContributorsQa topContributorsQa) {
         topContributorsQaRepository.save(topContributorsQa);
-        return "redirect:/top-contributors-qa";
+        return "redirect:/top-contributors-qa"; // Correct and standard way to redirect
     }
 
     @GetMapping("/update/{id}")
@@ -69,12 +69,12 @@ public class TopContributorsQaController {
     public String updateRecord(@PathVariable Integer id, @ModelAttribute TopContributorsQa topContributorsQa) {
         topContributorsQa.setId(id);
         topContributorsQaRepository.save(topContributorsQa);
-        return "redirect:/top-contributors-qa";
+        return "redirect:/top-contributors-qa"; // Correct and standard way to redirect
     }
 
     @GetMapping("/delete/{id}")
     public String deleteRecord(@PathVariable Integer id) {
         topContributorsQaRepository.deleteById(id);
-        return "redirect:/top-contributors-qa";
+        return "redirect:/top-contributors-qa"; // Correct and standard way to redirect
     }
 }
