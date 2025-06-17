@@ -4,7 +4,7 @@ setlocal
 REM === Configuration ===
 set "PROJECT_DIR=C:\Users\swpawar\Downloads\community\community"
 set "WAR_NAME=community.war"
-set "TOMCAT_DIR=C:\Users\swpawar\Desktop\apache-tomcat-10.1.36"
+set "TOMCAT_DIR=C:\Program Files\Apache Software Foundation\apache-tomcat-10.1.36"
 set "DEPLOY_DIR=%TOMCAT_DIR%\webapps"
 set "BACKUP_WAR_NAME=%WAR_NAME:.war=_bkp.war%"
 

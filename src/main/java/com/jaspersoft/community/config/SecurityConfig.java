@@ -19,7 +19,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/error").permitAll()
+                .requestMatchers("/login", "/error", "/actuator/**").permitAll()
 
                 // Only allow ADMIN to access create/update/delete endpoints
                 .requestMatchers("/qa/new", "/qa/update/**", "/qa/delete/**", "/wiki/new", "/wiki/update/**", "/wiki/delete/**").hasRole("ADMIN")
