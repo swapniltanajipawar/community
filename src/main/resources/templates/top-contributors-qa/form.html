@@ -5,15 +5,23 @@
 	<title>Add New Top QA Contributors</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 	<style>
-		html, body {
+		html,
+		body {
 			height: 100%;
 			margin: 0;
 			padding: 0;
 			display: flex;
 			flex-direction: column;
 		}
-		body { background-color: #f8f9fa; }
-		main { flex: 1 0 auto; }
+
+		body {
+			background-color: #f8f9fa;
+		}
+
+		main {
+			flex: 1 0 auto;
+		}
+
 		footer {
 			background-color: #002060;
 			color: white;
@@ -22,18 +30,27 @@
 			font-size: 14px;
 			flex-shrink: 0;
 		}
-		.navbar-custom { background-color: #002060; }
-		.navbar-custom .navbar-brand, .navbar-custom .nav-link, .navbar-custom .navbar-text {
+
+		.navbar-custom {
+			background-color: #002060;
+		}
+
+		.navbar-custom .navbar-brand,
+		.navbar-custom .nav-link,
+		.navbar-custom .navbar-text {
 			color: white;
 		}
+
 		.form-container {
 			margin-top: 30px;
 			margin-bottom: 30px;
 		}
+
 		.card {
 			border-radius: 12px;
 			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 		}
+
 		.navbar-brand {
 			font-weight: bold;
 			font-size: 24px;
@@ -46,15 +63,21 @@
 	<nav class="navbar navbar-expand-lg navbar-custom">
 		<div class="container-fluid">
 			<a class="navbar-brand" th:href="@{/dashboard}">JASPERSOFT COMMUNITY™</a>
-			<a class="btn btn-outline-light me-3" th:href="@{/dashboard}">← Back</a>
 			<div class="collapse navbar-collapse justify-content-end">
 				<ul class="navbar-nav align-items-center">
+					<li class="nav-item me-3">
+						<a class="btn btn-outline-light me-3" th:href="@{/dashboard}">← Back</a>
+					</li>
 					<li class="nav-item me-3">
 						<span class="navbar-text">
 							<strong th:text="${#authentication.name}">superuser</strong>
 						</span>
 					</li>
-					<li class="nav-item me-3"><a class="nav-link" href="#">Help</a></li>
+					<li class="nav-item me-3">
+						<a class="nav-link"
+							href="https://docs.google.com/document/d/16MIltAqhW8hAj6SuB4tCwC6v3XZlpDQfF6fReYiNLTA/edit?tab=t.0"
+							target="_blank" rel="noopener noreferrer">Help</a>
+					</li>
 					<li class="nav-item"><a class="btn btn-danger logout-btn" th:href="@{/logout}">Log Out</a></li>
 				</ul>
 			</div>
@@ -65,7 +88,7 @@
 		<div class="row justify-content-center">
 			<div class="col-md-8 col-lg-6">
 				<div class="card p-4">
-					<h3 class="text-center mb-4"
+					<h3 class="mb-4 text-center text-primary fw-bold"
 						th:text="${topContributorsQa.id} != null ? 'Update Top Contributors QA Form' : 'Top Contributors QA Form'">
 					</h3>
 
@@ -77,9 +100,8 @@
 							<label class="form-label">Contributor Name</label>
 							<select class="form-select" th:field="*{contributorName}" required>
 								<option value="">Select Contributor</option>
-								<option th:each="contributor : ${contributors}"
-										th:value="${contributor.fullName}"
-										th:text="${contributor.fullName}">
+								<option th:each="contributor : ${contributors}" th:value="${contributor.fullName}"
+									th:text="${contributor.fullName}">
 								</option>
 							</select>
 						</div>

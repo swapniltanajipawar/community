@@ -4,37 +4,20 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Wiki Contributors</title>
+	<title>Wiki Contributors | Jaspersoft Community</title>
 
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 	<style>
 		html,
 		body {
-			height: 100%;
+			height: 100px;
 			margin: 0;
 			padding: 0;
 		}
 
 		body {
 			background-color: #f8f9fa;
-			display: flex;
-			flex-direction: column;
-		}
-
-		main {
-			flex: 1 0 auto;
-			padding-top: 80px;
-			padding-bottom: 60px;
-		}
-
-		footer {
-			background-color: #002060;
-			color: white;
-			text-align: center;
-			padding: 10px;
-			font-size: 14px;
-			flex-shrink: 0;
 		}
 
 		.navbar-custom {
@@ -56,9 +39,13 @@
 			font-size: 24px;
 		}
 
+		main {
+			padding-top: 80px;
+			padding-bottom: 60px;
+		}
+
 		.table-wrapper {
-			max-height: 75vh;
-			/* optional: remove if you want full scroll with page */
+			max-height: 70vh;
 			overflow-y: auto;
 		}
 
@@ -67,7 +54,55 @@
 			top: 0;
 			background-color: #002060;
 			color: white;
-			z-index: 1;
+			z-index: 10;
+			box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+		}
+
+		.table td,
+		.table th {
+			vertical-align: middle;
+			padding: 0.4rem 0.6rem;
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+		.table th:nth-child(1),
+		.table td:nth-child(1) {
+			width: 70px;
+			text-align: center;
+		}
+
+		.table th:nth-child(2),
+		.table td:nth-child(2) {
+			max-width: 200px;
+		}
+
+		.table th:nth-child(3),
+		.table td:nth-child(3) {
+			max-width: 300px;
+		}
+
+		.table th:nth-child(4),
+		.table td:nth-child(4) {
+			width: 150px;
+			text-align: center;
+		}
+
+		.form-select,
+		.btn {
+			min-width: 120px;
+		}
+
+		footer {
+			background-color: #002060;
+			color: white;
+			text-align: center;
+			padding: 10px;
+			font-size: 14px;
+			position: fixed;
+			bottom: 0;
+			width: 100%;
 		}
 	</style>
 </head>
@@ -77,16 +112,20 @@
 	<nav class="navbar navbar-expand-lg navbar-custom">
 		<div class="container-fluid">
 			<a class="navbar-brand" th:href="@{/dashboard}">JASPERSOFT COMMUNITY™</a>
-			<a class="btn btn-outline-light me-3" th:href="@{/dashboard}">← Back</a>
 			<div class="collapse navbar-collapse justify-content-end">
 				<ul class="navbar-nav align-items-center">
+					<li class="nav-item me-3">
+						<a class="btn btn-outline-light me-3" th:href="@{/dashboard}">← Back</a>
+					</li>
 					<li class="nav-item me-3">
 						<span class="navbar-text">
 							<strong th:text="${#authentication.name}">superuser</strong>
 						</span>
 					</li>
 					<li class="nav-item me-3">
-						<a class="nav-link" href="#">Help</a>
+						<a class="nav-link"
+							href="https://docs.google.com/document/d/16MIltAqhW8hAj6SuB4tCwC6v3XZlpDQfF6fReYiNLTA/edit?tab=t.0"
+							target="_blank" rel="noopener noreferrer">Help</a>
 					</li>
 					<li class="nav-item">
 						<a class="btn btn-danger logout-btn" th:href="@{/logout}">Log Out</a>
@@ -96,23 +135,22 @@
 		</div>
 	</nav>
 
-	<main class="container">
+	<main class="container my-5">
 		<div class="d-flex justify-content-between align-items-center mb-4">
-			<h2>Wiki Contributors</h2>
-			<div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+			<h2 class="mb-0">Wiki Contributors</h2>
+			<div th:if="${#authorization.expression('hasAnyRole(''SUPERUSER'', ''MANAGEMENT_USER'')')}">
 				<a th:href="@{/wiki-contributors/new}" class="btn btn-success">Add Wiki Contributor</a>
-
 			</div>
 		</div>
 
-		<div class="table-wrapper">
-			<table class="table table-bordered table-striped shadow-sm">
+		<div class="table-wrapper shadow-sm">
+			<table class="table table-bordered table-striped table-sm">
 				<thead>
 					<tr>
 						<th>ID</th>
 						<th>Category</th>
 						<th>Full Name</th>
-						<th class="text-center">Actions</th>
+						<th sec:authorize="hasAnyRole('ADMIN','MANAGEMENT_USER')">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -120,15 +158,14 @@
 						<td th:text="${contributor.id}">1</td>
 						<td th:text="${contributor.category}">Category</td>
 						<td th:text="${contributor.fullName}">Full Name</td>
-						<td class="text-center">
-							<div class="d-flex gap-2" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+						<td th:if="${#authorization.expression('hasAnyRole(''SUPERUSER'', ''MANAGEMENT_USER'')')}">
+							<div class="d-flex gap-2">
 								<a class="btn btn-sm btn-primary"
 									th:href="@{'/wiki-contributors/update/' + ${contributor.id}}">Edit</a>
 								<a class="btn btn-sm btn-danger"
 									th:href="@{'/wiki-contributors/delete/' + ${contributor.id}}"
 									onclick="return confirm('Are you sure you want to delete this record?')">Delete</a>
 							</div>
-							<span th:if="${#authorization.expression('hasRole(''USER'')')}">View Only</span>
 						</td>
 					</tr>
 				</tbody>
@@ -137,7 +174,7 @@
 	</main>
 
 	<footer>
-		© 2025 Jaspersoft Community™. All rights reserved.
+		© 2025 JASPERSOFT COMMUNITY™. All rights reserved.
 	</footer>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

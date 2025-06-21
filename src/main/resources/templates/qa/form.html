@@ -8,18 +8,22 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
 	<style>
-		html, body {
+		html,
+		body {
 			height: 100%;
 			margin: 0;
 			display: flex;
 			flex-direction: column;
 		}
+
 		body {
 			background-color: #f8f9fa;
 		}
+
 		main {
 			flex: 1 0 auto;
 		}
+
 		footer {
 			background-color: #002060;
 			color: white;
@@ -28,22 +32,27 @@
 			font-size: 14px;
 			flex-shrink: 0;
 		}
+
 		.navbar-custom {
 			background-color: #002060;
 		}
+
 		.navbar-custom .navbar-brand,
 		.navbar-custom .nav-link,
 		.navbar-custom .navbar-text {
 			color: white;
 		}
+
 		.card {
 			border-radius: 12px;
 			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 		}
+
 		.navbar-brand {
 			font-weight: bold;
 			font-size: 24px;
 		}
+
 		.toast-container {
 			position: fixed;
 			top: 20px;
@@ -57,25 +66,31 @@
 
 	<!-- Toast container -->
 	<div class="toast-container">
-		<div class="toast align-items-center text-bg-success border-0" role="alert" th:if="${successMessage}" th:text="${successMessage}" aria-live="assertive" aria-atomic="true">
+		<div class="toast align-items-center text-bg-success border-0" role="alert" th:if="${successMessage}"
+			th:text="${successMessage}" aria-live="assertive" aria-atomic="true">
 		</div>
-		<div class="toast align-items-center text-bg-danger border-0" role="alert" th:if="${errorMessage}" th:text="${errorMessage}" aria-live="assertive" aria-atomic="true">
+		<div class="toast align-items-center text-bg-danger border-0" role="alert" th:if="${errorMessage}"
+			th:text="${errorMessage}" aria-live="assertive" aria-atomic="true">
 		</div>
 	</div>
 
 	<nav class="navbar navbar-expand-lg navbar-custom">
 		<div class="container-fluid">
 			<a class="navbar-brand" th:href="@{/dashboard}">JASPERSOFT COMMUNITY™</a>
-			<a class="btn btn-outline-light me-3" th:href="@{/dashboard}">← Back</a>
 			<div class="collapse navbar-collapse justify-content-end">
 				<ul class="navbar-nav align-items-center">
+					<li class="nav-item me-3">
+						<a class="btn btn-outline-light me-3" th:href="@{/dashboard}">← Back</a>
+					</li>
 					<li class="nav-item me-3">
 						<span class="navbar-text">
 							<strong th:text="${#authentication.name}">superuser</strong>
 						</span>
 					</li>
 					<li class="nav-item me-3">
-						<a class="nav-link" href="#">Help</a>
+						<a class="nav-link"
+							href="https://docs.google.com/document/d/16MIltAqhW8hAj6SuB4tCwC6v3XZlpDQfF6fReYiNLTA/edit?tab=t.0"
+							target="_blank" rel="noopener noreferrer">Help</a>
 					</li>
 					<li class="nav-item">
 						<a class="btn btn-danger logout-btn" th:href="@{/logout}">Log Out</a>
@@ -87,9 +102,10 @@
 
 	<main class="container mt-5">
 		<div class="card p-5">
-			<h2 class="mb-4" th:text="${qa.id} != null ? 'Update QA Record' : 'Create New QA Record'"></h2>
+			<h2 class="mb-4 text-center text-primary fw-bold" th:text="${qa.id} != null ? 'Update QA Record' : 'Create New QA Record'"></h2>
 
-			<form th:action="@{${qa.id} != null ? '/qa/update/' + ${qa.id} : '/qa'}" th:object="${qa}" method="post" id="qaForm">
+			<form th:action="@{${qa.id} != null ? '/qa/update/' + ${qa.id} : '/qa'}" th:object="${qa}" method="post"
+				id="qaForm">
 
 				<div class="mb-3">
 					<label for="contributorName" class="form-label">Contributor Name</label>
@@ -101,22 +117,28 @@
 
 				<div class="mb-3">
 					<label for="questionsAssigned" class="form-label">Questions Assigned</label>
-					<input type="number" th:field="*{questionsAssigned}" class="form-control" id="questionsAssigned" required>
+					<input type="number" th:field="*{questionsAssigned}" class="form-control" id="questionsAssigned"
+						required>
 				</div>
 
 				<div class="mb-3">
-					<label for="questionsPendingOnCommunityUser" class="form-label">Question Pending On Community User</label>
-					<input type="number" th:field="*{questionsPendingOnCommunityUser}" class="form-control" id="questionsPendingOnCommunityUser" required>
+					<label for="questionsPendingOnCommunityUser" class="form-label">Question Pending On Community
+						User</label>
+					<input type="number" th:field="*{questionsPendingOnCommunityUser}" class="form-control"
+						id="questionsPendingOnCommunityUser" required>
 				</div>
 
 				<div class="mb-3">
-					<label for="questionsPendingContribution" class="form-label">Questions Pending For Contribution</label>
-					<input type="number" th:field="*{questionsPendingContribution}" class="form-control" id="questionsPendingContribution" required>
+					<label for="questionsPendingContribution" class="form-label">Questions Pending For
+						Contribution</label>
+					<input type="number" th:field="*{questionsPendingContribution}" class="form-control"
+						id="questionsPendingContribution" required>
 				</div>
 
 				<div class="mb-3">
 					<label for="questionsAnswered" class="form-label">Question Answered</label>
-					<input type="number" th:field="*{questionsAnswered}" class="form-control" id="questionsAnswered" required>
+					<input type="number" th:field="*{questionsAnswered}" class="form-control" id="questionsAnswered"
+						required>
 				</div>
 
 				<div class="mb-3">

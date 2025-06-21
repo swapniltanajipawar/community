@@ -23,8 +23,8 @@ public class QaController {
     @Autowired
     private QaContributorsListRepository qaContributorsListRepository; // Corrected casing for consistency
 
-    private final List<String> months = List.of("JAN", "FEB", "MAR", "APR", "MAY", "JUN",
-                                                 "JUL", "AUG", "SEP", "OCT", "NOV", "DEC");
+    private final List<String> months = List.of("JAN24", "FEB24", "MAR24", "APR24", "MAY24", "JUN24", "JUL24", "AUG24", "SEP24", "OCT24", "NOV24", "DEC24",
+    		"JAN25", "FEB25", "MAR25", "APR25", "MAY25", "JUN25", "JUL25", "AUG25", "SEP25", "OCT25", "NOV25", "DEC25");
 
     // Fetch the list of QA records based on selected month or show all if no month is selected
     @GetMapping

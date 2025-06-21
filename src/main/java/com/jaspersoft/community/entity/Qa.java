@@ -25,7 +25,7 @@ public class Qa {
     @Column(name = "questions_answered")
     private Integer questionsAnswered;
     
-    @Column(name = "month", length = 3)
+    @Column(name = "month", length = 50)
     private String month;
 
 	public Integer getId() {

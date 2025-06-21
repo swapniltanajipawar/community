@@ -69,6 +69,11 @@
 			color: white;
 			z-index: 1;
 		}
+
+		.form-select,
+		.btn {
+			min-width: 120px;
+		}
 	</style>
 </head>
 
@@ -77,16 +82,19 @@
 	<nav class="navbar navbar-expand-lg navbar-custom">
 		<div class="container-fluid">
 			<a class="navbar-brand" th:href="@{/dashboard}">JASPERSOFT COMMUNITY™</a>
-			<a class="btn btn-outline-light me-3" th:href="@{/dashboard}">← Back</a>
+			
 			<div class="collapse navbar-collapse justify-content-end">
 				<ul class="navbar-nav align-items-center">
+					<li class="nav-item">
+						<a class="btn btn-outline-light me-3" th:href="@{/dashboard}">← Back</a>
+					</li>
 					<li class="nav-item me-3">
 						<span class="navbar-text">
 							<strong th:text="${#authentication.name}">superuser</strong>
 						</span>
 					</li>
 					<li class="nav-item me-3">
-						<a class="nav-link" href="#">Help</a>
+						<a class="nav-link" href="https://docs.google.com/document/d/16MIltAqhW8hAj6SuB4tCwC6v3XZlpDQfF6fReYiNLTA/edit?tab=t.0" target="_blank" rel="noopener noreferrer">Help</a>
 					</li>
 					<li class="nav-item">
 						<a class="btn btn-danger logout-btn" th:href="@{/logout}">Log Out</a>
@@ -99,7 +107,7 @@
 	<main class="container mt-4">
 		<div class="d-flex justify-content-between align-items-center mb-4">
 			<h2 class="mb-0">Monthly Wiki Summary</h2>
-			<div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+			<div th:if="${#authorization.expression('hasAnyRole(''SUPERUSER'', ''MANAGEMENT_USER'')')}">
 				<a th:href="@{/monthly-wiki-summary/new}" class="btn btn-success">Add Monthly Wiki Record</a>
 			</div>
 		</div>
@@ -131,7 +139,7 @@
 						<th>Total Articles Pending</th>
 						<th>Updated Article %</th>
 						<th>Pending Article %</th>
-						<th>Actions</th>
+						<th sec:authorize="hasAnyRole('ADMIN','MANAGEMENT_USER')">Actions</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -142,15 +150,14 @@
 						<td th:text="${record.totalArticlesPending}">0</td>
 						<td th:text="${record.updatedArticlePercent}">0%</td>
 						<td th:text="${record.pendingArticlePercent}">0%</td>
-						<td>
-							<div class="d-flex gap-2" th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+						<td th:if="${#authorization.expression('hasAnyRole(''SUPERUSER'', ''MANAGEMENT_USER'')')}">
+							<div class="d-flex gap-2">
 								<a th:href="@{'/monthly-wiki-summary/update/' + ${record.id}}"
 									class="btn btn-sm btn-primary">Edit</a>
 								<a class="btn btn-sm btn-danger"
 									th:href="@{'/monthly-wiki-summary/delete/' + ${record.id}}"
 									onclick="return confirm('Are you sure you want to delete this record?')">Delete</a>
 							</div>
-							<span th:if="${#authorization.expression('hasRole(''USER'')')}">View Only</span>
 						</td>
 					</tr>
 				</tbody>

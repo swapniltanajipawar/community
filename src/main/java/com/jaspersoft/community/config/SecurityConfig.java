@@ -1,32 +1,35 @@
 package com.jaspersoft.community.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.web.SecurityFilterChain;
+import com.jaspersoft.community.service.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
+    @Autowired
+    private CustomUserDetailsService userDetailsService;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/login", "/error", "/actuator/**").permitAll()
-
-                // Only allow ADMIN to access create/update/delete endpoints
-                .requestMatchers("/qa/new", "/qa/update/**", "/qa/delete/**", "/wiki/new", "/wiki/update/**", "/wiki/delete/**").hasRole("ADMIN")
-
-                // Allow both ADMIN and USER to access view/list pages
-                .requestMatchers("/qa/**", "/wiki/**", "/dashboard").hasAnyRole("ADMIN", "USER")
-
+        .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/login", "/register", "/forgot-password", "/forgot-username", "/reset-password/**", "/reset-username", "/css/**",  "/error", "/actuator/**").permitAll()
+				
+				 // Only allow ADMIN to access create/update/delete endpoints
+                .requestMatchers("/qa/new", "/qa/update/**", "/qa/delete/**", "/wiki/new", "/wiki/update/**", "/wiki/delete/**").hasAnyRole("SUPERUSER", "MANAGEMENT_USER" )
+				
+                .requestMatchers("/manage/**").hasRole("MANAGEMENT_USER")
+                .requestMatchers("/monitoring/**").hasAnyRole("USER","SUPERUSER", "MANAGEMENT_USER" )
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form
@@ -38,28 +41,22 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
             )
-            .csrf(csrf -> csrf.disable()); // Disable CSRF if needed for forms
+            .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
 
     @Bean
-    public InMemoryUserDetailsManager userDetailsService() {
-        UserDetails admin = User.withUsername("superuser")
-                .password("superuser")
-                .roles("ADMIN")
-                .build();
-
-        UserDetails normalUser = User.withUsername("user")
-                .password("user")
-                .roles("USER")
-                .build();
-
-        return new InMemoryUserDetailsManager(admin, normalUser);
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance(); // For demo only — use BCrypt in real apps
+    public AuthenticationManager authManager(HttpSecurity http) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder())
+                .and()
+                .build();
     }
 }

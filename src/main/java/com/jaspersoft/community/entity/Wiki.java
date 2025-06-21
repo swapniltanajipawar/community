@@ -19,7 +19,7 @@ public class Wiki {
     @Column(name = "articles_updated")
     private Integer articlesUpdated;
 
-    @Column(name = "month", length = 3)
+    @Column(name = "month", length = 50)
     private String month;
     
     

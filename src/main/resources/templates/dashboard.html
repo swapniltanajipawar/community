@@ -1,32 +1,56 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Admin Dashboard</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background-color: #f8f9fa;
-            min-height: 100vh;
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
         }
+        body {
+            background-color: #f8f9fa;
+            flex: 1;
+        }
+
+        /* Sticky Navbar */
         .navbar-custom {
             background-color: #002060;
+            position: sticky;
+            top: 0;
+            z-index: 1030;
         }
-        .navbar-custom .navbar-brand, 
-        .navbar-custom .nav-link, 
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link,
         .navbar-custom .navbar-text {
             color: white;
         }
+
+        /* Main Content */
+        .content {
+            padding: 20px;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Sticky Footer */
         .footer {
             background-color: #002060;
             color: white;
             text-align: center;
             padding: 10px 0;
-            margin-top: auto;
+            position: sticky;
+            bottom: 0;
+            width: 100%;
+            z-index: 1030;
         }
+
+        /* Buttons */
         .card-button {
             margin-bottom: 15px;
             background-color: #003366;
@@ -47,7 +71,7 @@
 </head>
 
 <body>
-
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" th:href="@{/}">JASPERSOFT COMMUNITY™</a>
@@ -55,13 +79,12 @@
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item me-3">
                         <span class="navbar-text">
-                           
-                         <strong th:text="${#authentication.name}">superuser</strong>
+                            <strong th:text="${#authentication.name}">superuser</strong>
                         </span>
                     </li>
-                    <li class="nav-item me-3">
-                        <a class="nav-link" href="#">Help</a>
-                    </li>
+					<li class="nav-item me-3">
+						<a class="nav-link" href="https://docs.google.com/document/d/16MIltAqhW8hAj6SuB4tCwC6v3XZlpDQfF6fReYiNLTA/edit?tab=t.0" target="_blank" rel="noopener noreferrer">Help</a>
+					</li>
                     <li class="nav-item">
                         <a class="btn btn-danger logout-btn" th:href="@{/logout}">Log Out</a>
                     </li>
@@ -70,29 +93,29 @@
         </div>
     </nav>
 
-    <div class="container my-5">
-
+    <!-- Content -->
+    <div class="content container my-4">
         <h1 class="mb-4 text-center">Welcome to Jaspersoft Community Admin Dashboard</h1>
-
         <div class="d-grid gap-3 col-6 mx-auto">
             <a th:href="@{/monthly-qa-summary}" class="btn card-button">Monthly QA Summary</a>
             <a th:href="@{/monthly-wiki-summary}" class="btn card-button">Monthly Wiki Summary</a>
             <a th:href="@{/qa-contributors}" class="btn card-button">QA Contributors List</a>
             <a th:href="@{/wiki-contributors}" class="btn card-button">Wiki Contributors List</a>
             <a th:href="@{/qa}" class="btn card-button">QA Records</a>
-			<a th:href="@{/wiki}" class="btn card-button">Wiki Records</a>
+            <a th:href="@{/wiki}" class="btn card-button">Wiki Records</a>
             <a th:href="@{/top-contributors-qa}" class="btn card-button">Top Contributors QA</a>
             <a th:href="@{/top-contributors-wiki}" class="btn card-button">Top Contributors Wiki</a>
-			<a th:href="@{/jaspersoft}" class="btn card-button">Jaspersoft Community Dashboard</a>
+			<a th:href="@{/monitoring}" class="btn card-button">System Monitoring</a>
+            <a sec:authorize="hasAnyRole('ADMIN','MANAGEMENT_USER')" th:href="@{/manage}" class="btn card-button">User & Role Management</a>
+            <a th:href="@{/jaspersoft}" class="btn card-button">Jaspersoft Community Dashboard</a>
         </div>
-
     </div>
 
+    <!-- Footer -->
     <footer class="footer">
-		© 2025 Jaspersoft Community™. All rights reserved.
+        © 2025 Jaspersoft Community™. All rights reserved.
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 </html>

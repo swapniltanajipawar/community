@@ -62,9 +62,11 @@
 	<nav class="navbar navbar-expand-lg navbar-custom">
 		<div class="container-fluid">
 			<a class="navbar-brand" th:href="@{/dashboard}">JASPERSOFT COMMUNITY™</a>
-			<a class="btn btn-outline-light me-3" th:href="@{/dashboard}">← Back</a>
 			<div class="collapse navbar-collapse justify-content-end">
 				<ul class="navbar-nav align-items-center">
+					<li class="nav-item me-3">
+						<a class="btn btn-outline-light me-3" th:href="@{/dashboard}">← Back</a>
+					</li>
 					<li class="nav-item me-3">
 						<span class="navbar-text">
 
@@ -72,7 +74,9 @@
 						</span>
 					</li>
 					<li class="nav-item me-3">
-						<a class="nav-link" href="#">Help</a>
+						<a class="nav-link"
+							href="https://docs.google.com/document/d/16MIltAqhW8hAj6SuB4tCwC6v3XZlpDQfF6fReYiNLTA/edit?tab=t.0"
+							target="_blank" rel="noopener noreferrer">Help</a>
 					</li>
 					<li class="nav-item">
 						<a class="btn btn-danger logout-btn" th:href="@{/logout}">Log Out</a>
@@ -86,7 +90,7 @@
 		<div class="row justify-content-center">
 			<div class="col-md-8 col-lg-6">
 				<div class="card p-4">
-					<h3 class="text-center mb-4"
+					<h3 class="mb-4 text-center text-primary fw-bold"
 						th:text="${contributor.id} != null ? 'Update Wiki Contributor' : 'Add Wiki Contributor'">
 						Add Wiki Contributor
 					</h3>
